@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StoryForge AI - Interactive Storytelling</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <span class="notification-icon">ℹ️</span>
+        <span class="notification-text"></span>
+    </div>
+
+    <!-- Keyboard Shortcuts Help -->
+    <div class="shortcuts-hint" id="shortcutsHint">
+        <span>Ctrl+S Save</span>
+        <span>Ctrl+B Bookmark</span>
+        <span>Ctrl+Z Undo</span>
+        <span>Ctrl+T Theme</span>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">✨</div>
+            </div>
+            <h1>StoryForge AI</h1>
+            <p class="tagline">Craft your personalized story through conversation</p>
+        </header>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="llm-status">
+                <div class="status-indicator">
+                    <div class="status-dot" id="statusDot"></div>
+                </div>
+                <span class="status-text" id="statusText">Checking AI status...</span>
+            </div>
+            <div class="status-actions">
+                <button class="icon-btn" id="themeToggle" title="Toggle Theme (Ctrl+T)">☀️</button>
+                <button class="icon-btn" id="soundToggle" title="Toggle Sound">🔊</button>
+                <button class="settings-btn" id="settingsBtn">⚙️ Settings</button>
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="main-card">
+            <!-- Progress Section -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <div class="phase-badge" id="phaseBadge">Getting Started</div>
+                    <div class="progress-info">
+                        <div class="mood-indicator" id="moodIndicator">
+                            <span class="mood-icon">😐</span>
+                            <span class="mood-text">Neutral</span>
+                        </div>
+                        <div class="progress-count">
+                            <span id="progressCurrent">0</span> of <span id="progressTotal">16</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Question Section -->
+            <div class="question-section" id="questionSection">
+                <div class="question-number" id="questionNumber">Question 1</div>
+                <h2 class="question-text" id="questionText">Loading your first question...</h2>
+
+                <div class="options-container" id="optionsContainer">
+                    <!-- Options will be dynamically inserted -->
+                </div>
+
+                <div class="text-input-container" id="textInputContainer">
+                    <textarea
+                        id="textInput"
+                        class="text-input"
+                        rows="3"
+                        placeholder="Type your creative answer here..."></textarea>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-ghost" id="backBtn">
+                        ← Back
+                    </button>
+                    <button class="btn btn-primary" id="nextBtn" disabled>
+                        Continue →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading Section -->
+            <div class="loading-section" id="loadingSection">
+                <div class="loader">
+                    <div class="loader-ring"></div>
+                    <div class="loader-ring"></div>
+                    <div class="loader-ring"></div>
+                </div>
+                <p class="loading-text" id="loadingText">Crafting your story...</p>
+                <p class="loading-subtext">This may take a moment</p>
+            </div>
+
+            <!-- Story Section -->
+            <div class="story-section" id="storySection">
+                <div class="story-header">
+                    <h2 class="story-title">Your Story</h2>
+                    <div class="story-meta">
+                        <div class="meta-item">
+                            <div class="meta-value" id="wordCount">0</div>
+                            <div class="meta-label">Words</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-value" id="segmentCount">0</div>
+                            <div class="meta-label">Chapters</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Character Panel -->
+                <div class="character-panel" id="characterPanel">
+                    <p class="empty-characters">Characters will appear as your story unfolds...</p>
+                </div>
+
+                <div class="story-content" id="storyContent">
+                    <!-- Story will be displayed here -->
+                </div>
+
+                <div class="story-choices" id="storyChoices">
+                    <div class="choices-title">What happens next?</div>
+                    <!-- Choices will be dynamically inserted -->
+                </div>
+            </div>
+
+            <!-- Enhanced Actions Bar -->
+            <div class="actions-bar">
+                <div class="actions-primary">
+                    <button class="action-btn" id="newStoryBtn" title="Start New Story">
+                        🔄 New Story
+                    </button>
+                    <button class="action-btn" id="continueBtn" title="Continue Story">
+                        ▶️ Continue
+                    </button>
+                    <button class="action-btn" id="downloadBtn" title="Export Story (Ctrl+D)">
+                        📥 Export
+                    </button>
+                </div>
+                <div class="actions-secondary">
+                    <button class="action-btn icon-only" id="saveStoryBtn" title="Save Story (Ctrl+S)">💾</button>
+                    <button class="action-btn icon-only" id="loadStoryBtn" title="Load Saved Stories">📂</button>
+                    <button class="action-btn icon-only" id="bookmarkBtn" title="Add Bookmark (Ctrl+B)">🔖</button>
+                    <button class="action-btn icon-only" id="historyBtn" title="Story Journey">🗺️</button>
+                    <button class="action-btn icon-only" id="undoBtn" title="Undo (Ctrl+Z)" disabled>↩️</button>
+                    <button class="action-btn icon-only" id="redoBtn" title="Redo (Ctrl+Y)" disabled>↪️</button>
+                    <button class="action-btn icon-only" id="readingModeBtn" title="Reading Mode (Ctrl+R)">📖</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Q&A Based Interactive Storytelling Using Generative AI</p>
+            <p>M-Tech Project • Department of Computer Engineering • SAKEC</p>
+            <p class="shortcuts-info">Press <kbd>?</kbd> for keyboard shortcuts</p>
+        </footer>
+    </div>
+
+    <!-- Settings Overlay -->
+    <div class="settings-overlay" id="settingsOverlay"></div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h2>⚙️ Settings</h2>
+            <button class="close-btn" id="closeSettings">×</button>
+        </div>
+        <div class="settings-content">
+            <div class="setting-group">
+                <label class="setting-label">AI Provider</label>
+                <select class="setting-select" id="llmProvider" onchange="updateProviderHelp()">
+                    <option value="ollama" selected>🖥️ Ollama (Local - No API)</option>
+                    <option value="groq">⚡ Groq (FREE & Fast!)</option>
+                    <option value="huggingface">🤗 Hugging Face (FREE)</option>
+                    <option value="openai">💰 OpenAI (Paid)</option>
+                </select>
+                <div class="provider-help" id="providerHelp" style="margin-top: 8px; font-size: 0.8rem; color: rgba(255,255,255,0.5);">
+                    Run locally with Ollama - no internet needed
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label">Model Name</label>
+                <select class="setting-select" id="modelName">
+                    <option value="llama3.2">Llama 3.2 (Ollama)</option>
+                    <option value="mistral">Mistral 7B</option>
+                    <option value="llama3-8b">Llama 3 8B (Groq)</option>
+                    <option value="mixtral">Mixtral 8x7B (Groq)</option>
+                    <option value="zephyr">Zephyr 7B (HuggingFace)</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label">Creativity Level</label>
+                <input type="range" class="setting-range" id="temperature"
+                    min="0.1" max="1.0" step="0.1" value="0.8">
+                <div class="range-value">
+                    <span id="tempValue">0.8 - Imaginative</span>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label">Max Story Length</label>
+                <input type="number" class="setting-input" id="maxTokens"
+                    value="1000" min="100" max="4000">
+            </div>
+
+            <div class="setting-group" id="apiKeyGroup">
+                <label class="setting-label">API Key</label>
+                <input type="password" class="setting-input" id="apiKey"
+                    placeholder="Enter your API key...">
+                <a href="#" id="getKeyLink" target="_blank" style="display: block; margin-top: 8px; font-size: 0.8rem; color: #6366f1;">
+                    🔑 Get FREE API Key →
+                </a>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label">Story Features</label>
+                <div class="toggle-group">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="typingEffect" checked>
+                        <span>Typing Animation</span>
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="soundEffects" checked>
+                        <span>Sound Effects</span>
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="autoSave" checked>
+                        <span>Auto-save Progress</span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" id="saveSettings">
+                Save Settings
+            </button>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        // Provider help text and links
+        function updateProviderHelp() {
+            const provider = document.getElementById('llmProvider').value;
+            const helpText = document.getElementById('providerHelp');
+            const apiKeyGroup = document.getElementById('apiKeyGroup');
+            const getKeyLink = document.getElementById('getKeyLink');
+            const modelSelect = document.getElementById('modelName');
+
+            const providerInfo = {
+                'ollama': {
+                    help: '🖥️ Run locally with Ollama - no internet or API key needed',
+                    showKey: false,
+                    link: 'https://ollama.ai/download',
+                    models: [
+                        {value: 'llama3.2', text: 'Llama 3.2'},
+                        {value: 'mistral', text: 'Mistral 7B'},
+                        {value: 'phi', text: 'Phi-2 (Small & Fast)'},
+                        {value: 'codellama', text: 'Code Llama'}
+                    ]
+                },
+                'groq': {
+                    help: '⚡ Super fast inference! FREE tier: 14,400 requests/day',
+                    showKey: true,
+                    link: 'https://console.groq.com/keys',
+                    models: [
+                        {value: 'llama3-8b', text: 'Llama 3.1 8B (Fast)'},
+                        {value: 'llama3-70b', text: 'Llama 3.1 70B (Best)'},
+                        {value: 'gemma', text: 'Gemma 2 9B'},
+                        {value: 'mixtral', text: 'Mixtral 8x7B'}
+                    ]
+                },
+                'huggingface': {
+                    help: '🤗 Free tier available. Some models work without API key!',
+                    showKey: true,
+                    link: 'https://huggingface.co/settings/tokens',
+                    models: [
+                        {value: 'mistral', text: 'Mistral 7B'},
+                        {value: 'zephyr', text: 'Zephyr 7B'},
+                        {value: 'falcon', text: 'Falcon 7B'},
+                        {value: 'phi', text: 'Phi-2'}
+                    ]
+                },
+                'openai': {
+                    help: '💰 Paid API - requires OpenAI account with credits',
+                    showKey: true,
+                    link: 'https://platform.openai.com/api-keys',
+                    models: [
+                        {value: 'gpt-3.5-turbo', text: 'GPT-3.5 Turbo'},
+                        {value: 'gpt-4', text: 'GPT-4'},
+                        {value: 'gpt-4-turbo', text: 'GPT-4 Turbo'}
+                    ]
+                }
+            };
+
+            const info = providerInfo[provider];
+            if (info) {
+                helpText.textContent = info.help;
+                apiKeyGroup.style.display = info.showKey ? 'block' : 'none';
+                getKeyLink.href = info.link;
+                getKeyLink.textContent = provider === 'ollama' ? '📥 Download Ollama →' : '🔑 Get FREE API Key →';
+
+                // Update model dropdown
+                modelSelect.innerHTML = info.models.map(m =>
+                    `<option value="${m.value}">${m.text}</option>`
+                ).join('');
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', updateProviderHelp);
+    </script>
+</body>
+</html>
