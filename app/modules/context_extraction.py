@@ -176,6 +176,10 @@ class ContextExtractionEngine:
         elif question_id.startswith("cont_"):
             self.context.continuation_preference = answer
 
+        # Custom (user-added questions or overridden answers)
+        elif question_id.startswith("custom_"):
+            self.context.custom_elements[question_id] = answer
+
     def _extract_setting_type(self, answer: str) -> str:
         """Extract setting type from answer"""
         for setting, keywords in self.setting_keywords.items():

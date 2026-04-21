@@ -11,15 +11,18 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent
 
 # LLM Configuration
-LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama")  # Options: "ollama", "openai", "gemini"
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2")  # Local model name
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "groq")  # Options: "ollama", "openai", "groq", "huggingface"
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3-8b")  # Model name (also used for Groq)
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 
-# OpenAI Configuration (for future use)
+# Groq Configuration (FREE)
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+
+# OpenAI Configuration
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")
 
-# Google Gemini Configuration (for future use)
+# Google Gemini Configuration
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-pro")
 

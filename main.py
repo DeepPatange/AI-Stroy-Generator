@@ -24,7 +24,8 @@ from app.modules.output_formatter import OutputFormatter
 
 from config import (
     LLM_PROVIDER, OLLAMA_MODEL, OLLAMA_BASE_URL,
-    OPENAI_API_KEY, OPENAI_MODEL, TEMPERATURE
+    OPENAI_API_KEY, OPENAI_MODEL, TEMPERATURE,
+    GROQ_API_KEY
 )
 
 # Initialize FastAPI app
@@ -46,12 +47,18 @@ prompt_layer = PromptEngineeringLayer()
 flow_manager = StoryFlowManager()
 output_formatter = OutputFormatter()
 
-# Initialize LLM
+# Initialize LLM - pick the right API key based on provider
+_api_key = None
+if LLM_PROVIDER == "openai":
+    _api_key = OPENAI_API_KEY
+elif LLM_PROVIDER == "groq":
+    _api_key = GROQ_API_KEY
+
 llm_config = LLMConfig(
     provider=LLMProvider(LLM_PROVIDER),
     model=OLLAMA_MODEL,
     base_url=OLLAMA_BASE_URL,
-    api_key=OPENAI_API_KEY if LLM_PROVIDER == "openai" else None,
+    api_key=_api_key,
     temperature=TEMPERATURE
 )
 story_generator = StoryGenerator(llm_config)
@@ -162,6 +169,27 @@ async def get_next_question(current_id: Optional[str] = None):
         },
         "progress": progress
     }
+
+
+@app.get("/api/questions/all")
+async def get_all_questions():
+    """Get all questions grouped by phase"""
+    phases_data = {}
+    for phase in QuestionPhase:
+        if phase == QuestionPhase.CONTINUATION:
+            continue
+        questions = user_input_module.get_questions_for_phase(phase)
+        phases_data[phase.value] = [
+            {
+                "id": q.id,
+                "phase": q.phase.value,
+                "text": q.text,
+                "options": q.options,
+                "is_required": q.is_required
+            }
+            for q in questions
+        ]
+    return {"phases": phases_data}
 
 
 @app.post("/api/response")

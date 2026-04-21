@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StoryForge AI - Interactive Storytelling</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+    <link rel="stylesheet" href="/static/css/style.css?v=7">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2728;</text></svg>">
 </head>
 <body>
-    <!-- Animated Background -->
+    <!-- Subtle Background -->
     <div class="bg-animation"></div>
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -16,7 +16,7 @@
 
     <!-- Notification -->
     <div class="notification" id="notification">
-        <span class="notification-icon">ℹ️</span>
+        <span class="notification-icon">&#x2139;&#xFE0F;</span>
         <span class="notification-text"></span>
     </div>
 
@@ -32,7 +32,7 @@
         <!-- Header -->
         <header class="header">
             <div class="logo">
-                <div class="logo-icon">✨</div>
+                <div class="logo-icon">&#x2728;</div>
             </div>
             <h1>StoryForge AI</h1>
             <p class="tagline">Craft your personalized story through conversation</p>
@@ -47,61 +47,124 @@
                 <span class="status-text" id="statusText">Checking AI status...</span>
             </div>
             <div class="status-actions">
-                <button class="icon-btn" id="themeToggle" title="Toggle Theme (Ctrl+T)">☀️</button>
-                <button class="icon-btn" id="soundToggle" title="Toggle Sound">🔊</button>
-                <button class="settings-btn" id="settingsBtn">⚙️ Settings</button>
+                <button class="icon-btn" id="themeToggle" title="Toggle Theme (Ctrl+T)">&#x2600;&#xFE0F;</button>
+                <button class="icon-btn" id="soundToggle" title="Toggle Sound">&#x1F50A;</button>
+                <button class="icon-btn" id="adminBtn" title="Manage Questions">&#x1F4DD;</button>
+                <button class="settings-btn" id="settingsBtn">&#x2699;&#xFE0F; Settings</button>
             </div>
         </div>
 
         <!-- Main Card -->
         <div class="main-card">
-            <!-- Progress Section -->
-            <div class="progress-section">
-                <div class="progress-header">
-                    <div class="phase-badge" id="phaseBadge">Getting Started</div>
-                    <div class="progress-info">
-                        <div class="mood-indicator" id="moodIndicator">
-                            <span class="mood-icon">😐</span>
-                            <span class="mood-text">Neutral</span>
+
+            <!-- ==================== LANDING / INFO SECTION ==================== -->
+            <div class="landing-section" id="landingSection">
+                <!-- Project Info -->
+                <div class="info-panel">
+                    <h2 class="info-title">Q&A Based Interactive Storytelling Using Generative AI</h2>
+                    <p class="info-description">
+                        This system generates personalized, interactive stories based on your preferences.
+                        Answer a series of questions about setting, characters, themes, and plot &mdash;
+                        then watch as AI crafts a unique story just for you. You can continue the story
+                        by making choices at each chapter.
+                    </p>
+                    <div class="info-features">
+                        <div class="info-feature">
+                            <span class="feature-icon">&#x1F30D;</span>
+                            <div>
+                                <strong>World Building</strong>
+                                <p>Choose your setting, time period, and atmosphere</p>
+                            </div>
                         </div>
-                        <div class="progress-count">
-                            <span id="progressCurrent">0</span> of <span id="progressTotal">16</span>
+                        <div class="info-feature">
+                            <span class="feature-icon">&#x1F464;</span>
+                            <div>
+                                <strong>Character Creation</strong>
+                                <p>Define your hero, companions, and antagonists</p>
+                            </div>
+                        </div>
+                        <div class="info-feature">
+                            <span class="feature-icon">&#x1F3AD;</span>
+                            <div>
+                                <strong>Theme &amp; Genre</strong>
+                                <p>Pick the genre, tone, and emotional journey</p>
+                            </div>
+                        </div>
+                        <div class="info-feature">
+                            <span class="feature-icon">&#x1F4D6;</span>
+                            <div>
+                                <strong>Plot Design</strong>
+                                <p>Shape the conflict, complexity, and ending</p>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="info-meta">
+                        <p><strong>M.Tech Project</strong> &bull; Department of Computer Engineering &bull; SAKEC</p>
+                    </div>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+
+                <!-- Question Count Selector -->
+                <div class="question-count-panel">
+                    <h3>How many questions would you like to answer?</h3>
+                    <p class="count-description">More questions = more personalized story. Fewer = quicker start.</p>
+                    <div class="count-options">
+                        <button class="count-btn" data-count="4" onclick="app.setQuestionCount(4, this)">
+                            <span class="count-number">4</span>
+                            <span class="count-label">Quick</span>
+                        </button>
+                        <button class="count-btn" data-count="8" onclick="app.setQuestionCount(8, this)">
+                            <span class="count-number">8</span>
+                            <span class="count-label">Balanced</span>
+                        </button>
+                        <button class="count-btn selected" data-count="12" onclick="app.setQuestionCount(12, this)">
+                            <span class="count-number">12</span>
+                            <span class="count-label">Detailed</span>
+                        </button>
+                        <button class="count-btn" data-count="17" onclick="app.setQuestionCount(17, this)">
+                            <span class="count-number">17</span>
+                            <span class="count-label">Full</span>
+                        </button>
+                    </div>
+                    <button class="btn btn-cta btn-large" id="startBtn" onclick="app.startQuestionnaire()">
+                        Begin Your Story &#x2192;
+                    </button>
                 </div>
             </div>
 
-            <!-- Question Section -->
-            <div class="question-section" id="questionSection">
-                <div class="question-number" id="questionNumber">Question 1</div>
-                <h2 class="question-text" id="questionText">Loading your first question...</h2>
-
-                <div class="options-container" id="optionsContainer">
-                    <!-- Options will be dynamically inserted -->
+            <!-- ==================== ALL QUESTIONS SECTION ==================== -->
+            <div class="all-questions-section hidden" id="allQuestionsSection">
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <div class="phase-badge" id="phaseBadge">Answer the Questions</div>
+                        <div class="progress-info">
+                            <div class="mood-indicator" id="moodIndicator">
+                                <span class="mood-icon">&#x1F914;</span>
+                                <span class="mood-text">Thinking</span>
+                            </div>
+                            <div class="progress-count">
+                                <span id="progressCurrent">0</span> of <span id="progressTotal">12</span> answered
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
                 </div>
 
-                <div class="text-input-container" id="textInputContainer">
-                    <textarea
-                        id="textInput"
-                        class="text-input"
-                        rows="3"
-                        placeholder="Type your creative answer here..."></textarea>
+                <div class="questions-form" id="questionsForm">
+                    <!-- All questions rendered here dynamically -->
                 </div>
 
-                <div class="nav-buttons">
-                    <button class="btn btn-ghost" id="backBtn">
-                        ← Back
-                    </button>
-                    <button class="btn btn-primary" id="nextBtn" disabled>
-                        Continue →
+                <div class="form-actions">
+                    <button class="btn btn-ghost" onclick="app.backToLanding()">&#x2190; Back</button>
+                    <button class="btn btn-cta btn-large" id="generateBtn" disabled onclick="app.submitAllAndGenerate()">
+                        Generate My Story &#x2728;
                     </button>
                 </div>
             </div>
 
-            <!-- Loading Section -->
+            <!-- ==================== LOADING SECTION ==================== -->
             <div class="loading-section" id="loadingSection">
                 <div class="loader">
                     <div class="loader-ring"></div>
@@ -112,7 +175,7 @@
                 <p class="loading-subtext">This may take a moment</p>
             </div>
 
-            <!-- Story Section -->
+            <!-- ==================== STORY SECTION ==================== -->
             <div class="story-section" id="storySection">
                 <div class="story-header">
                     <h2 class="story-title">Your Story</h2>
@@ -147,23 +210,26 @@
             <div class="actions-bar">
                 <div class="actions-primary">
                     <button class="action-btn" id="newStoryBtn" title="Start New Story">
-                        🔄 New Story
+                        &#x1F504; New Story
                     </button>
                     <button class="action-btn" id="continueBtn" title="Continue Story">
-                        ▶️ Continue
+                        &#x25B6;&#xFE0F; Continue
                     </button>
                     <button class="action-btn" id="downloadBtn" title="Export Story (Ctrl+D)">
-                        📥 Export
+                        &#x1F4E5; Export
                     </button>
                 </div>
                 <div class="actions-secondary">
-                    <button class="action-btn icon-only" id="saveStoryBtn" title="Save Story (Ctrl+S)">💾</button>
-                    <button class="action-btn icon-only" id="loadStoryBtn" title="Load Saved Stories">📂</button>
-                    <button class="action-btn icon-only" id="bookmarkBtn" title="Add Bookmark (Ctrl+B)">🔖</button>
-                    <button class="action-btn icon-only" id="historyBtn" title="Story Journey">🗺️</button>
-                    <button class="action-btn icon-only" id="undoBtn" title="Undo (Ctrl+Z)" disabled>↩️</button>
-                    <button class="action-btn icon-only" id="redoBtn" title="Redo (Ctrl+Y)" disabled>↪️</button>
-                    <button class="action-btn icon-only" id="readingModeBtn" title="Reading Mode (Ctrl+R)">📖</button>
+                    <button class="action-btn" id="storyMapBtn" title="Story Branch Tree">&#x1F333; Story Map</button>
+                    <button class="action-btn" id="charGraphBtn" title="Character Relationships">&#x1F465; Characters</button>
+                    <button class="action-btn icon-only" id="narrateBtn" title="Narrate Story">&#x1F50A;</button>
+                    <button class="action-btn icon-only" id="ambientBtn" title="Ambient Music">&#x1F3B5;</button>
+                    <button class="action-btn icon-only" id="saveStoryBtn" title="Save Story (Ctrl+S)">&#x1F4BE;</button>
+                    <button class="action-btn icon-only" id="loadStoryBtn" title="Load Saved Stories">&#x1F4C2;</button>
+                    <button class="action-btn icon-only" id="bookmarkBtn" title="Add Bookmark (Ctrl+B)">&#x1F516;</button>
+                    <button class="action-btn icon-only" id="undoBtn" title="Undo (Ctrl+Z)" disabled>&#x21A9;&#xFE0F;</button>
+                    <button class="action-btn icon-only" id="redoBtn" title="Redo (Ctrl+Y)" disabled>&#x21AA;&#xFE0F;</button>
+                    <button class="action-btn icon-only" id="readingModeBtn" title="Reading Mode (Ctrl+R)">&#x1F4D6;</button>
                 </div>
             </div>
         </div>
@@ -171,7 +237,7 @@
         <!-- Footer -->
         <footer class="footer">
             <p>Q&A Based Interactive Storytelling Using Generative AI</p>
-            <p>M-Tech Project • Department of Computer Engineering • SAKEC</p>
+            <p>M-Tech Project &bull; Department of Computer Engineering &bull; SAKEC</p>
             <p class="shortcuts-info">Press <kbd>?</kbd> for keyboard shortcuts</p>
         </footer>
     </div>
@@ -182,19 +248,19 @@
     <!-- Settings Panel -->
     <div class="settings-panel" id="settingsPanel">
         <div class="settings-header">
-            <h2>⚙️ Settings</h2>
-            <button class="close-btn" id="closeSettings">×</button>
+            <h2>&#x2699;&#xFE0F; Settings</h2>
+            <button class="close-btn" id="closeSettings">&times;</button>
         </div>
         <div class="settings-content">
             <div class="setting-group">
                 <label class="setting-label">AI Provider</label>
                 <select class="setting-select" id="llmProvider" onchange="updateProviderHelp()">
-                    <option value="ollama" selected>🖥️ Ollama (Local - No API)</option>
-                    <option value="groq">⚡ Groq (FREE & Fast!)</option>
-                    <option value="huggingface">🤗 Hugging Face (FREE)</option>
-                    <option value="openai">💰 OpenAI (Paid)</option>
+                    <option value="ollama" selected>&#x1F5A5;&#xFE0F; Ollama (Local - No API)</option>
+                    <option value="groq">&#x26A1; Groq (FREE &amp; Fast!)</option>
+                    <option value="huggingface">&#x1F917; Hugging Face (FREE)</option>
+                    <option value="openai">&#x1F4B0; OpenAI (Paid)</option>
                 </select>
-                <div class="provider-help" id="providerHelp" style="margin-top: 8px; font-size: 0.8rem; color: rgba(255,255,255,0.5);">
+                <div class="provider-help" id="providerHelp">
                     Run locally with Ollama - no internet needed
                 </div>
             </div>
@@ -229,8 +295,8 @@
                 <label class="setting-label">API Key</label>
                 <input type="password" class="setting-input" id="apiKey"
                     placeholder="Enter your API key...">
-                <a href="#" id="getKeyLink" target="_blank" style="display: block; margin-top: 8px; font-size: 0.8rem; color: #6366f1;">
-                    🔑 Get FREE API Key →
+                <a href="#" id="getKeyLink" target="_blank" style="display: block; margin-top: 8px; font-size: 0.78rem; color: var(--accent-2);">
+                    &#x1F511; Get FREE API Key &#x2192;
                 </a>
             </div>
 
@@ -252,13 +318,14 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" id="saveSettings">
+            <button class="btn btn-primary" style="width: 100%; margin-top: 16px;" id="saveSettings">
                 Save Settings
             </button>
         </div>
     </div>
 
-    <script src="/static/js/app.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="/static/js/app.js?v=12"></script>
     <script>
         // Provider help text and links
         function updateProviderHelp() {
@@ -270,7 +337,7 @@
 
             const providerInfo = {
                 'ollama': {
-                    help: '🖥️ Run locally with Ollama - no internet or API key needed',
+                    help: 'Run locally with Ollama - no internet or API key needed',
                     showKey: false,
                     link: 'https://ollama.ai/download',
                     models: [
@@ -281,7 +348,7 @@
                     ]
                 },
                 'groq': {
-                    help: '⚡ Super fast inference! FREE tier: 14,400 requests/day',
+                    help: 'Super fast inference! FREE tier: 14,400 requests/day',
                     showKey: true,
                     link: 'https://console.groq.com/keys',
                     models: [
@@ -292,7 +359,7 @@
                     ]
                 },
                 'huggingface': {
-                    help: '🤗 Free tier available. Some models work without API key!',
+                    help: 'Free tier available. Some models work without API key!',
                     showKey: true,
                     link: 'https://huggingface.co/settings/tokens',
                     models: [
@@ -303,7 +370,7 @@
                     ]
                 },
                 'openai': {
-                    help: '💰 Paid API - requires OpenAI account with credits',
+                    help: 'Paid API - requires OpenAI account with credits',
                     showKey: true,
                     link: 'https://platform.openai.com/api-keys',
                     models: [
@@ -319,7 +386,7 @@
                 helpText.textContent = info.help;
                 apiKeyGroup.style.display = info.showKey ? 'block' : 'none';
                 getKeyLink.href = info.link;
-                getKeyLink.textContent = provider === 'ollama' ? '📥 Download Ollama →' : '🔑 Get FREE API Key →';
+                getKeyLink.textContent = provider === 'ollama' ? 'Download Ollama' : 'Get FREE API Key';
 
                 // Update model dropdown
                 modelSelect.innerHTML = info.models.map(m =>

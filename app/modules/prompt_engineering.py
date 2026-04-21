@@ -239,6 +239,11 @@ class PromptEngineeringLayer:
             plot_style=context.plot_style or "engaging narrative"
         )
 
+        if context.custom_elements:
+            extras = "\n".join(f"- {v}" for v in context.custom_elements.values() if v)
+            if extras:
+                prompt += "\n\nAdditional user preferences to honor:\n" + extras
+
         return prompt
 
     def _build_setting_description(self, context: StoryContext) -> str:
